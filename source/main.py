@@ -56,15 +56,18 @@ def clear():
 
 
 # checks if a character is loaded
-def character_is_loaded(tab: str):
+def is_character_loaded(tab: str):
     global current_tab
     current_tab = tab
     clear()
     display_header()
     if index_of_loaded_character is None:
         print(
-            "No character is currently loaded! please input 'load [character_name]' in order to load a character."
+            "No character is currently loaded! please input 'load [character_name]' in order to load a character.\n"
+            "Contents of the characters folder:"
         )
+        for character in character_data_list:
+            print(f"{character_data_list.index(character)+1}. " + f"{character['name']}")
         return False
     return True
 
@@ -149,8 +152,6 @@ def get_user_input():
     
     if re.findall("\Aload", user_input):
         load(user_input.replace("load", "").strip())
-    elif re.findall("\Aupd", user_input):
-        update_character_data()
     elif re.findall("\Asta", user_input):
         stats()
     elif re.findall("\Ainv", user_input):
@@ -201,7 +202,7 @@ def get_user_input():
 
 def earn(amount: str):
     print(amount)
-    if character_is_loaded("stats") is None:
+    if is_character_loaded("stats") is None:
         return
     character_data_list[index_of_loaded_character]["inventory"]["Gold Piece"][
         "count"
@@ -211,7 +212,7 @@ def earn(amount: str):
 
 
 def pay(amount: str):
-    if character_is_loaded("stats") is None:
+    if is_character_loaded("stats") is None:
         return
     character_data_list[index_of_loaded_character]["inventory"]["Gold Piece"][
         "count"
@@ -263,7 +264,7 @@ def load(character_name: str):
 
 def stats():
     """Diplays stats of the loaded character."""
-    if not character_is_loaded("stats"):
+    if not is_character_loaded("stats"):
         return
     for field in character_data_list[index_of_loaded_character]:
         if field != "stats":
@@ -303,7 +304,7 @@ def stats():
 
 
 def inventory():
-    if not character_is_loaded("inventory"):
+    if not is_character_loaded("inventory"):
         return
     character_inventory = character_data_list[index_of_loaded_character]["inventory"]
     character_inventory = dict(
@@ -328,7 +329,7 @@ def inventory():
 
 
 def skills():
-    if not character_is_loaded("skills"):
+    if not is_character_loaded("skills"):
         return
     for skill in character_data_list[index_of_loaded_character]["skills"]:
         print(
@@ -337,7 +338,7 @@ def skills():
 
 
 def languages():
-    if not character_is_loaded("languages"):
+    if not is_character_loaded("languages"):
         return
     longest_length = 0
     for language in character_data_list[index_of_loaded_character]["languages"]:
@@ -350,7 +351,7 @@ def languages():
 
 
 def damage(damage_value: int):
-    if character_is_loaded("stats") is None:
+    if is_character_loaded("stats") is None:
         return
     character_data_list[index_of_loaded_character]["hp"]["current"] -= damage_value
     if character_data_list[index_of_loaded_character]["hp"]["current"] < 0:
@@ -360,7 +361,7 @@ def damage(damage_value: int):
 
 
 def heal(heal_value: int):
-    if character_is_loaded("stats") is None:
+    if is_character_loaded("stats") is None:
         return
     character_data_list[index_of_loaded_character]["hp"]["current"] += heal_value
     if (
@@ -375,7 +376,7 @@ def heal(heal_value: int):
 
 
 def spells():
-    if not character_is_loaded("spells"):
+    if not is_character_loaded("spells"):
         return
     character_inventory = character_data_list[index_of_loaded_character]["spells"]
     character_inventory = dict(

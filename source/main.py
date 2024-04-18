@@ -50,7 +50,6 @@ def display_header():
 
 
 def clear():
-    """defines a functino that clears the console"""
     os.system("cls" if os.name == "nt" else "clear")
 
 
@@ -120,12 +119,7 @@ def update_character_data():
         with open(f"./characters/{character}", "r") as file:
             character_data_list.append(json.load(file))
     global index_of_loaded_character, current_tab
-    index_of_loaded_character = None
-    current_tab = None
     display_header()
-    print(
-        "Character data updated succesfully.\nBecause of the update no character is currently loaded. Enter 'load [character_name] to load one.\n"
-    )
 
 
 def get_user_input():

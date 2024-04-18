@@ -1,0 +1,193 @@
+{
+    "name": "Aarkan Clarus",
+    "class": "Warlock",
+    "hp": {
+        "current": 9,
+        "max": 9
+    },
+    "lvl": 4,
+    "death saves": 3,
+    "stats": {
+        "strength": {
+            "base": 10,
+            "save": 0,
+            "athletics": 0
+        },
+        "dexterity": {
+            "base": 10,
+            "save": 0,
+            "acrobatics": 0,
+            "sleight of hand": 0,
+            "stealth": 0
+        },
+        "intelligence": {
+            "base": 10,
+            "save": 0,
+            "arcana": 0,
+            "history": 0,
+            "ivestigation": 0,
+            "nature": 0,
+            "religion": 0
+        },
+        "wisdom": {
+            "base": 10,
+            "save": 0,
+            "animal handling": 0,
+            "insight": 0,
+            "medicine": 0,
+            "perception": 0,
+            "survival": 0
+        },
+        "charisma": {
+            "base": 10,
+            "save": 0,
+            "deception": 0,
+            "intimidation": 0,
+            "performance": 0,
+            "persuasion": 0
+        },
+        "constitution": {
+            "base": 10,
+            "save": 0
+        }
+    },
+    "inventory": {
+        "gp": {
+            "catigory": "valuable",
+            "quantity": 38,
+            "description": "Standard money currency."
+        },
+        "Emblem of Caria": {
+            "catigory": "document",
+            "quantity": 1,
+            "description": "Emblem of the Carian family signifying a belounging to lesses nobility."
+        },
+        "Holy Land Visa": {
+            "catigory": "document",
+            "quantity": 1,
+            "description": "Entrence permit to the Holy land."
+        },
+        "Emblem of Denian Nobility close to the King": {
+            "catigory": "document",
+            "quantity": 1,
+            "description": "A token of gratitude gifted by the Prince of Denia to those close to him."
+        },
+        "leather Armor": {
+            "catigory": "armor",
+            "quantity": 1,
+            "description": "Simple leather armor."
+        },
+        "Crossbow": {
+            "catigory": "weapon",
+            "quantity": 1,
+            "description": "Standard crossbow."
+        },
+        "Splitting Greatsword": {
+            "catigory": "weapon",
+            "quantity": 1,
+            "description": "A heavy greatsword that can be transformed into a nimble rapier. \nSpecial effect: Once a day you can electrocute an enemy for 1d6 electric damage."
+        },
+        "Burial Blade": {
+            "catigory": "weapon",
+            "quantity": 1,
+            "description": "A trick weapon that resemples a scyth and can be swiftly turned into a sword or greataxe. \nSpecial effect: You can align this weapon to a single enemy type, against which it will be dealing increased damage."
+        },
+        "Umbrella Schield": {
+            "catigory": "weapon",
+            "quantity": 1,
+            "description": "A foldable shield that resembles an umbrella. Can be swiftly opened to surprise an enemy, and when closed is very easy to store."
+        },
+        "Basic Book of Elemental Magic": {
+            "catigory": "book",
+            "quantity": 1,
+            "description": "A book containing basic knowladge about elemental magic."
+        },
+        "Faction Book": {
+            "catigory": "book",
+            "quantity": 1,
+            "description": "[???]"
+        },
+        "Tinkering Tools": {
+            "catigory": "misc",
+            "quantity": 1,
+            "description": "A set of tools that is used for artificing."
+        },
+        "Dragon Scale": {
+            "catigory": "misc",
+            "quantity": 1,
+            "description": "A scale taken from a dragon."
+        },
+        "Luminite Ingot (purity: 85%)": {
+            "catigory": "misc",
+            "quantity": 2,
+            "description": "An ingot of luminite. It absorbs light which is then slowly released."
+        },
+        "Charge Crystal": {
+            "catigory": "misc",
+            "quantity": 3,
+            "description": "A crystal that absorbs and stores energy."
+        },
+        "Rope": {
+            "catigory": "misc",
+            "quantity": 5,
+            "description": "A simple rope."
+        },
+        "Quartz Ultra-Disk": {
+            "catigory": "weapon",
+            "quantity": 5,
+            "description": "A disk of quartz that deflect Magical spells into enemies' weak points."
+        },
+        "Platinum ingot": {
+            "catigory": "misc",
+            "quantity": 2,
+            "description": "An ingot of platinum. It is considered to by one of the best isolating materials."
+        },
+        "Tinkering Materiala": {
+            "catigory": "misc",
+            "quantity": 9,
+            "description": "Materials used for creation of contraptions."
+        },
+        "Onxy Chunk": {
+            "catigory": "misc",
+            "quantity": 2,
+            "description": "A chunk of onxy. Onxy is the hardest material known to man and is impossible to form. Emmits a lot of heat when force is aplied."
+        }
+    },
+    "spells": {
+        "Mending": {
+            "type": "cantrip",
+            "lvl": 0,
+            "description": "Mends a single tear in an object up to 30cm in length."
+        },
+        "Prestidigitation": {
+            "type": "cantrip",
+            "lvl": 0,
+            "description": "This spell is a minor magical trick that novice spellcasters use for practice."
+        },
+        "Sleep Talk": {
+            "type": "cantrip",
+            "lvl": 0,
+            "description": "You can sense danger while you are asleep and your body can act instinktivley in response."
+        },
+        "Embargo": {
+            "type": "voodoo",
+            "lvl": 2,
+            "description": "Make an enemy drop what they are holding."
+        },
+        "Charge": {
+            "type": "electric",
+            "lvl": 2,
+            "description": "Charge your body with electricity making your next lightning spell much stronger."
+        },
+        "Thunder Gauntlet": {
+            "type": "electric",
+            "lvl": 3,
+            "description": "Strike an enemy with an charged punch that will deal electric damage to them and cause an electric shockwave to appear bihind them in a 2 meter cone stunning enemies behing."
+        },
+        "Electro Drift": {
+            "type": "electric",
+            "lvl": 4,
+            "description": "Turn your body into pure electicity briefly travelling at immence speeds."
+        }
+    }
+}

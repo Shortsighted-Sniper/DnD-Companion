@@ -233,15 +233,9 @@ def load(character_name: str):
 
     if len(possible_characters) == 0:
         print(f"No character with name '{character_name}' found.")
-        print("Please pick one of the following names: ", end="")
-        for character in all_characters:
-            print(
-                "'"
-                + character
-                + "'"
-                + (" , " if (all_characters[-1] != character) else ""),
-                end="",
-            )
+        print("Please pick one of the following names: ")
+        for character in character_data_list:
+            print(f"{character_data_list.index(character)+1}. " + f"{character['name']}")
         print()
     elif len(possible_characters) == 1:
         for character in character_data_list:
@@ -250,15 +244,9 @@ def load(character_name: str):
                 index_of_loaded_character = character_data_list.index(character)
                 stats()
     else:
-        print("No exact matches did you mean ", end="")
+        print("No exact matche, pleaes select one of the following:", end="")
         for character in possible_characters:
-            print(
-                "'"
-                + character
-                + "'"
-                + (" or " if (possible_characters[-1] != character) else "?"),
-                end="",
-            )
+            print(f"{possible_characters.index(character)+1}. " + f"{character['name']}")
         print()
 
 

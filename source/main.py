@@ -10,6 +10,7 @@ index_of_loaded_character = None
 current_tab = None
 
 
+# displayes the navigation bar
 def display_header():
     print(
         ("-[" if current_tab == "stats" else "- ")
@@ -49,10 +50,12 @@ def display_header():
     )
 
 
+# clears the console
 def clear():
     os.system("cls" if os.name == "nt" else "clear")
 
 
+# checks if a character is loaded
 def character_is_loaded(tab: str):
     global current_tab
     current_tab = tab
@@ -66,6 +69,7 @@ def character_is_loaded(tab: str):
     return True
 
 
+# extracts caracter data from the file
 def extract_character_data():
     character_data_directory_contents = os.listdir(
         character_dir_path
@@ -86,9 +90,9 @@ def extract_character_data():
             character_data_list.append(json.load(file))
 
 
+# saves the character data to the character file
 def save_character_data():
     character_data_directory_contents = os.listdir(character_dir_path)
-    print(character_data_directory_contents)
     for character in character_data_list:
         with open(
             f"./characters/{character_data_directory_contents[character_data_list.index(character)]}",
@@ -97,16 +101,16 @@ def save_character_data():
             json.dump(character, file)
 
 
+# reads the character data from the files and updates the rendering
 def update_character_data():
     clear()
-    character_data_directory_contents = os.listdir(
-        character_dir_path
-    )  # contants of the 'characters' folder
+    character_data_directory_contents = os.listdir(character_dir_path)
     global character_data_list
-    character_data_list = []
-    character_data_files = []  # list of character data files
+    character_data_list.clear()
 
-    for file in character_data_directory_contents:  # adds files with
+    character_data_files = []
+
+    for file in character_data_directory_contents:
         if re.findall("\.json$", file):
             character_data_files.append(file)
 
@@ -118,7 +122,6 @@ def update_character_data():
     for character in character_data_files:
         with open(f"./characters/{character}", "r") as file:
             character_data_list.append(json.load(file))
-    global index_of_loaded_character, current_tab
     display_header()
 
 
@@ -140,6 +143,16 @@ def get_user_input():
         spells()
     elif re.findall("\Ahel", user_input):
         display_help()
+    elif re.findall("\Apay", user_input):
+        try:
+            pay(int(user_input.replace("pay", "").strip()))
+        except ValueError:
+            print("Error, the payed amount can only be a number. Please try again.")
+    elif re.findall("\Aearn", user_input):
+        try:
+            earn(int(user_input.replace("earn", "").strip()))
+        except ValueError:
+            print("Error, the earned amount can only be a number. Please try again.")
     elif re.findall("\Adamage", user_input):
         try:
             damage(int(user_input.replace("damage", "").strip()))
@@ -164,6 +177,27 @@ def get_user_input():
         print(
             f"Unknown command '{user_input}'. Input 'help' to see all commands and their uses."
         )
+
+
+def earn(amount: str):
+    print(amount)
+    if character_is_loaded("stats") is None:
+        return
+    character_data_list[index_of_loaded_character]["inventory"]["Gold Piece"][
+        "count"
+    ] += amount
+    save_character_data()
+    stats()
+
+
+def pay(amount: str):
+    if character_is_loaded("stats") is None:
+        return
+    character_data_list[index_of_loaded_character]["inventory"]["Gold Piece"][
+        "count"
+    ] -= amount
+    save_character_data()
+    stats()
 
 
 def load(character_name: str):
@@ -224,6 +258,10 @@ def stats():
                 + f"{character_data_list[index_of_loaded_character][field]}"
             )
         else:
+            print(
+                f"{'gp:':<15}"
+                + f"{character_data_list[index_of_loaded_character]['inventory']['Gold Piece']['count']}"
+            )
             loaded_character_stats = character_data_list[index_of_loaded_character][
                 "stats"
             ]
@@ -264,7 +302,7 @@ def inventory():
             print(item_catigory + ":")
             current_catigory = item_catigory
         print(
-            f"{('[' + str(character_inventory[item]['quantity']) + ']' if character_inventory[item]['quantity'] > 1 else '>'):>6} "
+            f"{('[' + str(character_inventory[item]['count']) + ']' if character_inventory[item]['count'] > 1 else '>'):>6} "
             + item
         )
 
@@ -292,11 +330,7 @@ def languages():
 
 
 def damage(damage_value: int):
-    clear()
-    if index_of_loaded_character is None:
-        print(
-            "No character is currently loaded! please input 'load [character_name]' in order to load a character."
-        )
+    if character_is_loaded("stats") is None:
         return
     character_data_list[index_of_loaded_character]["hp"]["current"] -= damage_value
     if character_data_list[index_of_loaded_character]["hp"]["current"] < 0:
@@ -306,11 +340,7 @@ def damage(damage_value: int):
 
 
 def heal(heal_value: int):
-    clear()
-    if index_of_loaded_character is None:
-        print(
-            "No character is currently loaded! please input 'load [character_name]' in order to load a character."
-        )
+    if character_is_loaded("stats") is None:
         return
     character_data_list[index_of_loaded_character]["hp"]["current"] += heal_value
     if (
@@ -358,22 +388,38 @@ def display_help():
     current_tab = "help"
     display_header()
     print(
-        "- Enter 'load [character_name] in order to load a character.\nExample: load Spring Caria\nTip: You don't actually need to fully type out the name of the character. \n    As long as the entered string of text is unique to the name of the character (e.g. 'spr' or 'aria' for 'Spring Caria') it will understand.\n"
+        "- Enter 'load [character_name] in order to load a character.\n"
+        "Example: load Spring Caria\n"
+        "Tip: You don't actually need to fully type out the name of the character. \n"
+        "    As long as the entered string of text is unique to the name of the character (e.g. 'spr' or 'aria' for 'Spring Caria') it will understand.\n"
     )
     print(
-        "- Enter the name of the tab from the navbar up top to go to that tab.\nExample: stats\nTip: You don't actually need to type out the whole tab name. \n    The first three letters are enough (e.g. 'lan' for 'languages').\n"
+        "- Enter the name of the tab from the navbar up top to go to that tab.\n"
+        "Example: stats\n"
+        "Tip: You don't actually need to type out the whole tab name. \n"
+        "    The first three letters are enough (e.g. 'lan' for 'languages').\n"
     )
     print(
-        "- Enter 'damage [damage_number]' in order to reduce the health of the currently loaded character by the specified number.\nExample: damage 3\n"
+        "- Enter 'damage [damage_number]' in order to reduce the health of the currently loaded character by the specified number.\n"
+        "Example: damage 3\n"
     )
     print(
-        "- Enter 'heal [health_number] in order to heal the currently loaded character by the specified number.\nExample: heal 3\n"
+        "- Enter 'heal [health_number] in order to heal the currently loaded character by the specified number.\n"
+        "Example: heal 3\n"
     )
     print(
-        "- Enter 'describe [entity_name] in order to see the description of an item/spell.\n    Note: This function only works in 'inventory' and 'spells' tabs.\nExample: describe steal sword.\nTip: you don't actuallly need to type out the whole name of the entity.\n    As long as the entered string of text is unique to the item (e.g. 'bow' or 'cro' for 'crossbow') it will understand.\nTip: You can also shorten this command to 'desc' (e.g. 'desc bow').\n    Note: you can only type 'desc' OR 'describe'. Variants of the word like 'des' or 'descri' will not work.\n"
+        "- Enter 'describe [entity_name] in order to see the description of an item/spell.\n"
+        "    Note: This function only works in 'inventory' and 'spells' tabs.\n"
+        "Example: describe steal sword.\n"
+        "Tip: You can also shorten this command to 'desc' (e.g. 'desc bow').\n"
+        "    Note: you can only type 'desc' OR 'describe'. Variants of the word like 'des' or 'descri' will not work.\n"
+        "Tip: you don't actuallly need to type out the whole name of the entity.\n"
+        "    As long as the entered string of text is unique to the item (e.g. 'bow' or 'cro' for 'crossbow') it will understand.\n"
     )
     print(
-        "- Enter 'update' in order to update the character data form the data files in [./characters]\nExample: uptade\nTip:You don't actually need to type out he whole command you can just 'upd' and it will undestand.\n"
+        "- Enter 'update' in order to update the character data form the data files in [./characters]\n"
+        "Example: uptade\n"
+        "Tip:You don't actually need to type out he whole command you can just 'upd' and it will undestand.\n"
     )
 
 

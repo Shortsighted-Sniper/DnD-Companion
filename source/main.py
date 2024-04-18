@@ -127,6 +127,26 @@ def update_character_data():
 
 def get_user_input():
     user_input: str = input("\n\n\nPlease enter a command: ").lower()
+    match user_input:
+        case "1":
+            stats()
+            return
+        case "2":
+            inventory()
+            return
+        case "3": 
+            skills()
+            return
+        case "4":
+            spells()
+            return
+        case "5":
+            languages()
+            return
+        case "6":
+            display_help()
+            return
+    
     if re.findall("\Aload", user_input):
         load(user_input.replace("load", "").strip())
     elif re.findall("\Aupd", user_input):

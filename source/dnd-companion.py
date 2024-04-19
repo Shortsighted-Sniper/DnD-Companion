@@ -7,7 +7,7 @@ import collections
 character_dir_path = "./characters/"  # path to the diractory that stores character info
 character_data_list = []  # list of character data extracted from their respective files
 index_of_loaded_character = None
-current_tab = None
+current_tab: str = "stats"
 
 
 # clears the console
@@ -93,7 +93,7 @@ def handle_input(program_input: str = None):
     if program_input:
         user_input = program_input
     else:
-        user_input: str = input("\n\n\nPlease enter a command: ").lower()
+        user_input: str = input("\n\n\n>>> ").lower()
     match user_input:
 
         case "1":
@@ -166,6 +166,7 @@ def handle_input(program_input: str = None):
         describe(user_input.replace("desc", "").strip())
     else:
         clear()
+        display_header()
         print(
             f"Unknown command '{user_input}'. Input 'help' to see all commands and their uses."
         )
@@ -195,7 +196,7 @@ def load(character_name: str):
             if character["name"] == possible_characters[0]:
                 global index_of_loaded_character
                 index_of_loaded_character = character_data_list.index(character)
-                stats()
+                handle_input(current_tab)
     else:
         print("No exact matche, pleaes select one of the following:", end="")
         for character in possible_characters:
@@ -311,6 +312,7 @@ def inventory():
             f"{('[' + str(character_inventory[item]['count']) + ']' if character_inventory[item]['count'] > 1 else '>'):>6} "
             + item
         )
+    print()
 
 
 # displayes the skills of the loaded character
@@ -466,6 +468,7 @@ def describe(entity_name: str):
         case "spells":
             describe_spell(entity_name)
         case _:
+            handle_input(current_tab)
             print("There are nothing that can be described on this page.")
 
 
@@ -476,6 +479,7 @@ def describe_item(item_name: str):
             "No character is currently loaded! please input 'load [character_name]' in order to load a character."
         )
         return
+
     all_items = []
     possible_items = []
     for item in character_data_list[index_of_loaded_character]["inventory"]:
@@ -483,23 +487,18 @@ def describe_item(item_name: str):
         if item_name in str(item).lower():
             possible_items.append(item)
 
+    handle_input(current_tab)
     if len(possible_items) == 0:
-        print(f"No item '{item_name}' found.")
-        print("Please pick one of the following names: ", end="")
-        for item in all_items:
-            print("'" + item + "'" + (" , " if (all_items[-1] != item) else ""), end="")
-        print()
+        print(f"No item with name '{item_name}' found.")
     elif len(possible_items) == 1:
-        for item in character_data_list[index_of_loaded_character]["inventory"]:
-            if item == possible_items[0]:
-                print(
-                    f"{item}:\n    {character_data_list[index_of_loaded_character]['inventory'][item]['description']}"
-                )
+        print(
+            f"> {possible_items[0]}:\n{character_data_list[index_of_loaded_character]['inventory'][possible_items[0]]['description']}"
+        )
     else:
-        print("No exact matches did you mean ", end="")
+        print("No exact match. Possible items: ", end="")
         for item in possible_items:
             print(
-                "'" + item + "'" + (" or " if (possible_items[-1] != item) else "?"),
+                item + (", " if (possible_items[-1] != item) else ""),
                 end="",
             )
         print()
@@ -564,7 +563,9 @@ def add_item():
             "\n(*Note: the programm WILL crash if the input consists of any symbols other then 0-9)\nPlease enter the count of the item: "
         )
     )
-    catigory = input("\nPlease enter the catigory into which the item belongs: ").lower()
+    catigory = input(
+        "\nPlease enter the catigory into which the item belongs: "
+    ).lower()
     description = input("\nPlease enter a description for the item: ")
     character_data_list[index_of_loaded_character]["inventory"][name] = {
         "catigory": catigory,
@@ -587,7 +588,9 @@ def add_skill():
             print("\nYou must enter a name.\n")
     if name in character_data_list[index_of_loaded_character]["skills"]:
         skills()
-        print("\nA skill with this name already exists! You can't have 2 skills with the exact same name.")
+        print(
+            "\nA skill with this name already exists! You can't have 2 skills with the exact same name."
+        )
         return
     description = input("\nPlease enter a description for the skill: ")
     character_data_list[index_of_loaded_character]["skills"][name] = description
@@ -609,7 +612,9 @@ def add_spell():
             print("\nYou must enter a name for the spell.\n")
     if name in character_data_list[index_of_loaded_character]["spells"]:
         skills()
-        print("\nA spell with this name already exists! You can't have 2 spells with the exact same name.")
+        print(
+            "\nA spell with this name already exists! You can't have 2 spells with the exact same name."
+        )
         return
     lvl = int(
         input(
@@ -625,6 +630,31 @@ def add_spell():
     }
     save_character_data()
     spells()
+
+
+def delete(entity_name: str):
+    match current_tab:
+        case "inventory":
+            delete_item(entity_name)
+        case "spells":
+            delete_spell(entity_name)
+        case "skills":
+            delete_skill(entity_name)
+        case _:
+            handle_input(current_tab)
+            print("\nThere is nothing on this page you can delete.")
+
+
+def delete_item():
+    return
+
+
+def delete_spell():
+    return
+
+
+def delete_skill():
+    return
 
 
 def main():

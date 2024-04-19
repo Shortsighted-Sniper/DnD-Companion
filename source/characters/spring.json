@@ -43,7 +43,7 @@
     "constitution": { "base": 9, "save": 2 }
   },
   "inventory": {
-    "Gold Piece": {
+    "gp": {
       "catigory": "valuables",
       "count": 450,
       "description": "Standard money currency."
@@ -138,6 +138,16 @@
       "catigory": "misc",
       "count": 2,
       "description": "A chunk of onxy. Onxy is the hardest material known to man and is impossible to form. Emmits a lot of heat when force is aplied."
+    },
+    "tesoirantras": {
+      "catigory": "valuables",
+      "count": 123,
+      "description": "arstdhneio"
+    },
+    "arstneio": {
+      "catigory": "armor",
+      "count": 2,
+      "description": "it's just an arstneio"
     }
   },
   "spells": {
@@ -187,6 +197,8 @@
     "Lightning proficiency": "Advantage on learning lightning magic.",
     "Quick Handler": "You can switch trick weapons twice per turn and once when attacked.",
     "Examiner": "Once a day, you can examine a magical, cursed or technical device or weapons to gain in depth knowledge about it.",
-    "???": "You perceive energy differently."
+    "???": "You perceive energy differently.",
+    "Skiller": "anreotnarientoiarnt",
+    "skiller": "arntoiaernt"
   }
 }

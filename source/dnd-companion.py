@@ -164,6 +164,10 @@ def handle_input(program_input: str = None):
         describe(user_input.replace("describe", "").strip())
     elif re.findall("\Adesc", user_input):
         describe(user_input.replace("desc", "").strip())
+    elif re.findall("\Adelete", user_input):
+        delete(user_input.replace("delete", "").strip())
+    elif re.findall("\Adel", user_input):
+        delete(user_input.replace("del", "").strip())
     else:
         clear()
         display_header()
@@ -176,11 +180,9 @@ def handle_input(program_input: str = None):
 def load(character_name: str):
     clear()
     update_character_data()
-    all_characters = []
     possible_characters = []
     for character in character_data_list:
-        all_characters.append(character["name"])
-        if character_name in str(character["name"]).lower():
+        if character_name.lower() in str(character["name"]).lower():
             possible_characters.append(character["name"])
 
     if len(possible_characters) == 0:
@@ -636,22 +638,114 @@ def delete(entity_name: str):
             print("\nThere is nothing on this page you can delete.")
 
 
-def delete_item():
-    return
+def delete_item(item_name: str):
+    if index_of_loaded_character is None:
+        print(
+            "No character is currently loaded! please input 'load [character_name]' in order to load a character."
+        )
+        return
+
+    possible_items = []
+    for item in character_data_list[index_of_loaded_character]["inventory"]:
+        if item_name in str(item).lower():
+            possible_items.append(item)
+
+    handle_input(current_tab)
+    if len(possible_items) == 0:
+        print(f"No item with name '{item_name}' found.")
+    elif len(possible_items) == 1:
+        print(f"Are you sure that you want to delete '{possible_items[0]}'?")
+        confirmation = input("confirm (y/n): ")
+        if confirmation[0] == "y":
+            character_data_list[index_of_loaded_character]["inventory"].pop(
+                possible_items[0]
+            )
+            save_character_data()
+        inventory()
+    else:
+        print("No exact match. Possible items: ", end="")
+        for item in possible_items:
+            print(
+                item + (", " if (possible_items[-1] != item) else ""),
+                end="",
+            )
+        print()
 
 
-def delete_spell():
-    return
+def delete_spell(spell_name: str):
+    if index_of_loaded_character is None:
+        print(
+            "No character is currently loaded! please input 'load [character_name]' in order to load a character."
+        )
+        return
+
+    possible_spells = []
+    for spell in character_data_list[index_of_loaded_character]["spells"]:
+        if spell_name in str(spell).lower():
+            possible_spells.append(spell)
+
+    handle_input(current_tab)
+    if len(possible_spells) == 0:
+        print(f"No item with name '{spell_name}' found.")
+    elif len(possible_spells) == 1:
+        print(f"Are you sure that you want to delete '{possible_spells[0]}'?")
+        confirmation = input("confirm (y/n): ")
+        if confirmation[0] == "y":
+            character_data_list[index_of_loaded_character]["spells"].pop(
+                possible_spells[0]
+            )
+            save_character_data()
+        spells()
+    else:
+        print("No exact match. Possible skills: ", end="")
+        for spell in possible_spells:
+            print(
+                spell + (", " if (possible_spells[-1] != spell) else ""),
+                end="",
+            )
+        print()
 
 
-def delete_skill():
-    return
+def delete_skill(skill_name):
+    if index_of_loaded_character is None:
+        print(
+            "No character is currently loaded! please input 'load [character_name]' in order to load a character."
+        )
+        return
+
+    possible_skills = []
+    for skill in character_data_list[index_of_loaded_character]["skills"]:
+        if skill_name in str(skill).lower():
+            possible_skills.append(skill)
+
+    handle_input(current_tab)
+    if len(possible_skills) == 0:
+        print(f"No item with name '{skill_name}' found.")
+    elif len(possible_skills) == 1:
+        print(f"Are you sure that you want to delete '{possible_skills[0]}'?")
+        confirmation = input("confirm (y/n): ")
+        if confirmation[0] == "y":
+            character_data_list[index_of_loaded_character]["skill"].pop(
+                possible_skills[0]
+            )
+            save_character_data()
+        skills()
+    else:
+        print("No exact match. Possible skills: ", end="")
+        for skill in possible_skills:
+            print(
+                skill + (", " if (possible_skills[-1] != skill) else ""),
+                end="",
+            )
+        print()
 
 
 def main():
     extract_character_data()
     clear()
     stats()
+    if len(character_data_list) == 1:
+        load(character_data_list[0]["name"])
     while True:
         handle_input()
 

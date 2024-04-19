@@ -103,10 +103,10 @@ def handle_input(program_input: str = None):
             inventory()
             return
         case "3":
-            skills()
+            spells()
             return
         case "4":
-            spells()
+            skills()
             return
         case "5":
             languages()
@@ -220,15 +220,15 @@ def display_header():
         end="",
     )
     print(
-        ("-[" if current_tab == "skills" else "- ")
-        + "skills"
-        + ("]" if current_tab == "skills" else " "),
-        end="",
-    )
-    print(
         ("-[" if current_tab == "spells" else "- ")
         + "spells"
         + ("]" if current_tab == "spells" else " "),
+        end="",
+    )
+    print(
+        ("-[" if current_tab == "skills" else "- ")
+        + "skills"
+        + ("]" if current_tab == "skills" else " "),
         end="",
     )
     print(

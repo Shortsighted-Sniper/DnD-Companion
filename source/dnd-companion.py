@@ -352,6 +352,7 @@ def spells():
             f"{('[' + str(character_inventory[item]['lvl']) + ']' if character_inventory[item]['lvl'] > 1 else '>'):>6} "
             + item
         )
+    print()
 
 
 # displays the languages of the loaded characer
@@ -480,10 +481,8 @@ def describe_item(item_name: str):
         )
         return
 
-    all_items = []
     possible_items = []
     for item in character_data_list[index_of_loaded_character]["inventory"]:
-        all_items.append(item)
         if item_name in str(item).lower():
             possible_items.append(item)
 
@@ -511,32 +510,24 @@ def describe_spell(spell_name: str):
             "No character is currently loaded! please input 'load [character_name]' in order to load a character."
         )
         return
-    all_spells = []
+
     possible_spells = []
     for spell in character_data_list[index_of_loaded_character]["spells"]:
-        all_spells.append(spell)
         if spell_name in str(spell).lower():
             possible_spells.append(spell)
 
+    handle_input(current_tab)
     if len(possible_spells) == 0:
-        print(f"No spell '{spell_name}' found.")
-        print("Please pick one of the following names: ", end="")
-        for spell in all_spells:
-            print(
-                "'" + spell + "'" + (" , " if (all_spells[-1] != spell) else ""), end=""
-            )
-        print()
+        print(f"No spell with name '{spell_name}' found.")
     elif len(possible_spells) == 1:
-        for spell in character_data_list[index_of_loaded_character]["spells"]:
-            if spell == possible_spells[0]:
-                print(
-                    f"{spell}:\n    {character_data_list[index_of_loaded_character]['spells'][spell]['description']}"
-                )
+        print(
+            f"> {possible_spells[0]}:\n{character_data_list[index_of_loaded_character]['spells'][possible_spells[0]]['description']}"
+        )
     else:
-        print("No exact matches did you mean ", end="")
+        print("No exact match. Possible spells: ", end="")
         for spell in possible_spells:
             print(
-                "'" + spell + "'" + (" or " if (possible_spells[-1] != spell) else "?"),
+                spell + (", " if (possible_spells[-1] != spell) else ""),
                 end="",
             )
         print()

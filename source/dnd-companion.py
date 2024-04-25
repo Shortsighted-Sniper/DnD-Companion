@@ -23,7 +23,7 @@ def is_character_loaded(tab: str):
     display_header()
     if index_of_loaded_character is None:
         print(
-            "No character is currently loaded! Please input 'load [character_name]' .\n"
+            "No character is currently loaded! Please input 'load [character_name]'.\n"
             "Contents of the characters folder:"
         )
         for character in character_data_list:
@@ -177,9 +177,7 @@ def load(character_name: str):
         print(f"No character with name '{character_name}' found.")
         print("Please pick one of the following names: ")
         for character in character_data_list:
-            print(
-                f"{character_data_list.index(character)+1}. " + f"{character['name']}"
-            )
+            print(f"{character_data_list.index(character)+1}." + f"{character['name']}")
         print()
     elif len(possible_characters) == 1:
         for character in character_data_list:
@@ -188,10 +186,10 @@ def load(character_name: str):
                 index_of_loaded_character = character_data_list.index(character)
                 handle_input(current_tab)
     else:
-        print("No exact matche, pleaes select one of the following:", end="")
+        print("No exact matche, pleaes select one of the following:")
         for character in possible_characters:
             print(
-                f"{possible_characters.index(character)+1}. " + f"{character['name']}"
+                f"{possible_characters.index(character)+1}. " + character
             )
         print()
 
@@ -366,49 +364,47 @@ def help():
     current_tab = "help"
     display_header()
     print(
-        """
-        (*Note: if the formatting looks broken use ctrl + MMB to zoom out in order to fix it)  
+        """(*Note: if the formatting looks broken use ctrl + MMB to zoom out in order to fix it)  
 
-        Command abbreviation explained:
-        ├─> [] - expected data to be inputed
-        │   └─> Example: 'heal [health healed]' -> 'heal 3'
-        └─> () - the command could also be shortened to the specified form
-            ├─> Example: 'describe(desc) [item/spell name]' -> 'desc Sword')
-            └─> Notes: 
-                └─> the '|' marks different ways in which the command can be shortend
-        
-        Navigation:
-        ├─> stats(sta | 1)     - navigates to the stats screen
-        ├─> inventory(inv | 2) - navigates to the inventory tab
-        ├─> spells(spe | 3)    - navigates to the spells tab
-        ├─> skills(ski | 4)    - navigates to the skills tab
-        ├─> languages(lan | 5) - navigates to the languages tab
-        └─> help(hel | 6)      - navigates to the help menu (Yippee! You found it!)
-          
-        Tab spacific commands:
-        ├─> Stats:
-        │   ├─> Money manipulation:
-        │   │   ├─> earn [amount earned] - increases gp count by the specified amount
-        │   │   └─> pay [amount payed]   - decreases gp count by the specified amount
-        │   └─> Health manipulation:
-        │       ├─> heal [amount healed]       - increases hp by specified amount up to max hp
-        │       └─> damage(dam) [damage taken] - decreases hp by specified amount down to 0 hp
-        ├─> Inventory:
-        │   ├─> add                        - starts the sequence of adding an item
-        │   ├─> delete(del) [item name]    - deletes the specified item
-        │   └─> describe(desc) [item name] - displays the description of the specified item
-        ├─> Spells:
-        │   ├─> add                         - starts the sequence of adding a spell
-        │   ├─> delete(del) [spell name]    - deletes the sepecified spell
-        │   └─> describe(desc) [spell name] - displays the descriptino of the specified spell
-        ├─> Skills:
-        │   ├─> add                      - starts the sequence of adding a skill
-        │   └─> delete(del) [skill name] - deletes the specified skill
-        └─> Languages:
-            ├─> add                      - starts the sequence of adding a language
-            └─> delete(del) [skill name] - deletes the specified language
-        
-        """
+Command abbreviation explained:
+├─> [] - expected data to be inputed
+│   └─> Example: 'heal [health healed]' -> 'heal 3'
+└─> () - the command could also be shortened to the specified form
+    ├─> Example: 'describe(desc) [item/spell name]' -> 'desc Sword')
+    └─> Notes: 
+        └─> the '|' marks different ways in which the command can be shortend
+
+Navigation:
+├─> stats(sta | 1)     - navigates to the stats screen
+├─> inventory(inv | 2) - navigates to the inventory tab
+├─> spells(spe | 3)    - navigates to the spells tab
+├─> skills(ski | 4)    - navigates to the skills tab
+├─> languages(lan | 5) - navigates to the languages tab
+└─> help(hel | 6)      - navigates to the help menu (Yippee! You found it!)
+    
+Tab spacific commands:
+├─> Stats:
+│   ├─> Money manipulation:
+│   │   ├─> earn [amount earned] - increases gp count by the specified amount
+│   │   └─> pay [amount payed]   - decreases gp count by the specified amount
+│   └─> Health manipulation:
+│       ├─> heal [amount healed]       - increases hp by specified amount up to max hp
+│       └─> damage(dam) [damage taken] - decreases hp by specified amount down to 0 hp
+├─> Inventory:
+│   ├─> add                        - starts the sequence of adding an item
+│   ├─> delete(del) [item name]    - deletes the specified item
+│   └─> describe(desc) [item name] - displays the description of the specified item
+├─> Spells:
+│   ├─> add                         - starts the sequence of adding a spell
+│   ├─> delete(del) [spell name]    - deletes the sepecified spell
+│   └─> describe(desc) [spell name] - displays the descriptino of the specified spell
+├─> Skills:
+│   ├─> add                      - starts the sequence of adding a skill
+│   └─> delete(del) [skill name] - deletes the specified skill
+└─> Languages:
+    ├─> add                      - starts the sequence of adding a language
+    └─> delete(del) [skill name] - deletes the specified language
+"""
     )
 
 
@@ -532,18 +528,6 @@ def describe(entity_name: str):
 
 # starts the process of adding something to the dataset
 def add():
-    match current_tab:
-        case "inventory":
-            add_item()
-        case "spells":
-            add_spell()
-        case "skills":
-            add_skill()
-        case "languages":
-            add_language()
-        case _:
-            print("There is nothing you can add on this page.")
-
     def add_item():
         if not is_character_loaded("inventory"):
             return
@@ -691,15 +675,15 @@ def add():
         description = input("\nPlease enter a description for the sikll: ")
 
         if not description:
-            spells()
+            skills()
             return
 
         character_data_list[index_of_loaded_character]["skills"][name] = description
         save_character_data()
-        spells()
+        skills()
 
     def add_language():
-        if not is_character_loaded("skills"):
+        if not is_character_loaded("languages"):
             return
 
         name: str
@@ -729,26 +713,25 @@ def add():
             spells()
             return
 
-        character_data_list[index_of_loaded_character]["languages"] = lvl
+        character_data_list[index_of_loaded_character]["languages"][name] = lvl
         save_character_data()
         languages()
+
+    match current_tab:
+        case "inventory":
+            add_item()
+        case "spells":
+            add_spell()
+        case "skills":
+            add_skill()
+        case "languages":
+            add_language()
+        case _:
+            print("There is nothing you can add on this page.")
 
 
 # starts the process of deleting something from the dataset
 def delete(entity_name: str):
-    match current_tab:
-        case "inventory":
-            delete_item(entity_name)
-        case "spells":
-            delete_spell(entity_name)
-        case "skills":
-            delete_skill(entity_name)
-        case "languages":
-            delete_language(entity_name)
-        case _:
-            handle_input(current_tab)
-            print("\nThere is nothing on this page you can delete.")
-
     def delete_item(item_name: str):
         if index_of_loaded_character is None:
             print(
@@ -825,7 +808,7 @@ def delete(entity_name: str):
         possible_skills = []
         for skill in character_data_list[index_of_loaded_character]["skills"]:
             if skill_name in str(skill).lower():
-                possible_skills.append(skill)
+                str(possible_skills.append(skill)).lower()
 
         handle_input(current_tab)
         if len(possible_skills) == 0:
@@ -834,7 +817,7 @@ def delete(entity_name: str):
             print(f"Are you sure that you want to delete '{possible_skills[0]}'?")
             confirmation = input("confirm (y/n): ")
             if confirmation[0] == "y":
-                character_data_list[index_of_loaded_character]["skill"].pop(
+                character_data_list[index_of_loaded_character]["skills"].pop(
                     possible_skills[0]
                 )
                 save_character_data()
@@ -856,7 +839,7 @@ def delete(entity_name: str):
             return
 
         possible_languages = []
-        for language in character_data_list[index_of_loaded_character]["langauges"]:
+        for language in character_data_list[index_of_loaded_character]["languages"]:
             if language_name in str(language).lower():
                 possible_languages.append(language)
 
@@ -882,12 +865,26 @@ def delete(entity_name: str):
                 )
             print()
 
+    match current_tab:
+        case "inventory":
+            delete_item(entity_name)
+        case "spells":
+            delete_spell(entity_name)
+        case "skills":
+            delete_skill(entity_name)
+        case "languages":
+            delete_language(entity_name)
+        case _:
+            handle_input(current_tab)
+            print("\nThere is nothing on this page you can delete.")
+
 
 def main():
     extract_character_data()
-    stats()
     if len(character_data_list) == 1:
         load(character_data_list[0]["name"])
+    else:
+        stats()
     while True:
         handle_input()
 

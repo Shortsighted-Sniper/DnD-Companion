@@ -23,7 +23,7 @@ def is_character_loaded(tab: str):
     display_header()
     if index_of_loaded_character is None:
         print(
-            "No character is currently loaded! please input 'load [character_name]' in order to load a character.\n"
+            "No character is currently loaded! Please input 'load [character_name]' .\n"
             "Contents of the characters folder:"
         )
         for character in character_data_list:
@@ -94,47 +94,35 @@ def handle_input(program_input: str = None):
         user_input = program_input
     else:
         user_input: str = input("\n\n\n>>> ").lower()
-    match user_input:
 
-        case "1":
-            stats()
-            return
-        case "2":
-            inventory()
-            return
-        case "3":
-            spells()
-            return
-        case "4":
-            skills()
-            return
-        case "5":
-            languages()
-            return
-        case "6":
-            help()
-            return
-
-    if re.findall("\Aload", user_input):
+    if user_input[0] is "1":
+        stats()
+    elif user_input[0] is "2":
+        inventory()
+    elif user_input[0] is "3":
+        spells()
+    elif user_input[0] is "4":
+        skills()
+    elif user_input[0] is "5":
+        languages()
+    elif user_input[0] is "6":
+        help()
+    elif re.findall("\Aload", user_input):
         load(user_input.replace("load", "").strip())
     elif re.findall("\Asta", user_input):
         stats()
     elif re.findall("\Ainv", user_input):
         inventory()
+    elif re.findall("\Aspe", user_input):
+        spells()
     elif re.findall("\Aski", user_input):
         skills()
     elif re.findall("\Alan", user_input):
         languages()
-    elif re.findall("\Aspe", user_input):
-        spells()
     elif re.findall("\Ahel", user_input):
         help()
-    elif re.findall("\Aadd it", user_input):
-        add_item()
-    elif re.findall("\Aadd sk", user_input):
-        add_skill()
-    elif re.findall("\Aadd sp", user_input):
-        add_spell()
+    elif re.findall("\Aadd", user_input):
+        add()
     elif re.findall("\Apay", user_input):
         try:
             pay(int(user_input.replace("pay", "").strip()))
@@ -378,38 +366,49 @@ def help():
     current_tab = "help"
     display_header()
     print(
-        "- Enter 'load [character_name] in order to load a character.\n"
-        "Example: load Spring Caria\n"
-        "Tip: You don't actually need to fully type out the name of the character. \n"
-        "    As long as the entered string of text is unique to the name of the character (e.g. 'spr' or 'aria' for 'Spring Caria') it will understand.\n"
-    )
-    print(
-        "- Enter the name of the tab from the navbar up top to go to that tab.\n"
-        "Example: stats\n"
-        "Tip: You don't actually need to type out the whole tab name. \n"
-        "    The first three letters are enough (e.g. 'lan' for 'languages').\n"
-    )
-    print(
-        "- Enter 'damage [damage_number]' in order to reduce the health of the currently loaded character by the specified number.\n"
-        "Example: damage 3\n"
-    )
-    print(
-        "- Enter 'heal [health_number] in order to heal the currently loaded character by the specified number.\n"
-        "Example: heal 3\n"
-    )
-    print(
-        "- Enter 'describe [entity_name] in order to see the description of an item/spell.\n"
-        "    Note: This function only works in 'inventory' and 'spells' tabs.\n"
-        "Example: describe steal sword.\n"
-        "Tip: You can also shorten this command to 'desc' (e.g. 'desc bow').\n"
-        "    Note: you can only type 'desc' OR 'describe'. Variants of the word like 'des' or 'descri' will not work.\n"
-        "Tip: you don't actuallly need to type out the whole name of the entity.\n"
-        "    As long as the entered string of text is unique to the item (e.g. 'bow' or 'cro' for 'crossbow') it will understand.\n"
-    )
-    print(
-        "- Enter 'update' in order to update the character data form the data files in [./characters]\n"
-        "Example: uptade\n"
-        "Tip:You don't actually need to type out he whole command you can just 'upd' and it will undestand.\n"
+        """
+        (*Note: if the formatting looks broken use ctrl + MMB to zoom out in order to fix it)  
+
+        Command abbreviation explained:
+        ├─> [] - expected data to be inputed
+        │   └─> Example: 'heal [health healed]' -> 'heal 3'
+        └─> () - the command could also be shortened to the specified form
+            ├─> Example: 'describe(desc) [item/spell name]' -> 'desc Sword')
+            └─> Notes: 
+                └─> the '|' marks different ways in which the command can be shortend
+        
+        Navigation:
+        ├─> stats(sta | 1)     - navigates to the stats screen
+        ├─> inventory(inv | 2) - navigates to the inventory tab
+        ├─> spells(spe | 3)    - navigates to the spells tab
+        ├─> skills(ski | 4)    - navigates to the skills tab
+        ├─> languages(lan | 5) - navigates to the languages tab
+        └─> help(hel | 6)      - navigates to the help menu (Yippee! You found it!)
+          
+        Tab spacific commands:
+        ├─> Stats:
+        │   ├─> Money manipulation:
+        │   │   ├─> earn [amount earned] - increases gp count by the specified amount
+        │   │   └─> pay [amount payed]   - decreases gp count by the specified amount
+        │   └─> Health manipulation:
+        │       ├─> heal [amount healed]       - increases hp by specified amount up to max hp
+        │       └─> damage(dam) [damage taken] - decreases hp by specified amount down to 0 hp
+        ├─> Inventory:
+        │   ├─> add                        - starts the sequence of adding an item
+        │   ├─> delete(del) [item name]    - deletes the specified item
+        │   └─> describe(desc) [item name] - displays the description of the specified item
+        ├─> Spells:
+        │   ├─> add                         - starts the sequence of adding a spell
+        │   ├─> delete(del) [spell name]    - deletes the sepecified spell
+        │   └─> describe(desc) [spell name] - displays the descriptino of the specified spell
+        ├─> Skills:
+        │   ├─> add                      - starts the sequence of adding a skill
+        │   └─> delete(del) [skill name] - deletes the specified skill
+        └─> Languages:
+            ├─> add                      - starts the sequence of adding a language
+            └─> delete(del) [skill name] - deletes the specified language
+        
+        """
     )
 
 
@@ -474,157 +473,268 @@ def describe(entity_name: str):
             handle_input(current_tab)
             print("There are nothing that can be described on this page.")
 
-
-# describes an item with name matching the input
-def describe_item(item_name: str):
-    if index_of_loaded_character is None:
-        print(
-            "No character is currently loaded! please input 'load [character_name]' in order to load a character."
-        )
-        return
-
-    possible_items = []
-    for item in character_data_list[index_of_loaded_character]["inventory"]:
-        if item_name in str(item).lower():
-            possible_items.append(item)
-
-    handle_input(current_tab)
-    if len(possible_items) == 0:
-        print(f"No item with name '{item_name}' found.")
-    elif len(possible_items) == 1:
-        print(
-            f"> {possible_items[0]}:\n{character_data_list[index_of_loaded_character]['inventory'][possible_items[0]]['description']}"
-        )
-    else:
-        print("No exact match. Possible items: ", end="")
-        for item in possible_items:
+    def describe_item(item_name: str):
+        if index_of_loaded_character is None:
             print(
-                item + (", " if (possible_items[-1] != item) else ""),
-                end="",
+                "No character is currently loaded! Please input 'load [character_name]' ."
             )
-        print()
+            return
 
+        possible_items = []
+        for item in character_data_list[index_of_loaded_character]["inventory"]:
+            if item_name in str(item).lower():
+                possible_items.append(item)
 
-# describes a spell with name matching the input
-def describe_spell(spell_name: str):
-    if index_of_loaded_character is None:
-        print(
-            "No character is currently loaded! please input 'load [character_name]' in order to load a character."
-        )
-        return
-
-    possible_spells = []
-    for spell in character_data_list[index_of_loaded_character]["spells"]:
-        if spell_name in str(spell).lower():
-            possible_spells.append(spell)
-
-    handle_input(current_tab)
-    if len(possible_spells) == 0:
-        print(f"No spell with name '{spell_name}' found.")
-    elif len(possible_spells) == 1:
-        print(
-            f"> {possible_spells[0]}:\n{character_data_list[index_of_loaded_character]['spells'][possible_spells[0]]['description']}"
-        )
-    else:
-        print("No exact match. Possible spells: ", end="")
-        for spell in possible_spells:
+        handle_input(current_tab)
+        if len(possible_items) == 0:
+            print(f"No item with name '{item_name}' found.")
+        elif len(possible_items) == 1:
             print(
-                spell + (", " if (possible_spells[-1] != spell) else ""),
-                end="",
+                f"> {possible_items[0]}:\n{character_data_list[index_of_loaded_character]['inventory'][possible_items[0]]['description']}"
             )
-        print()
+        else:
+            print("No exact match. Possible items: ", end="")
+            for item in possible_items:
+                print(
+                    item + (", " if (possible_items[-1] != item) else ""),
+                    end="",
+                )
+            print()
+
+    def describe_spell(spell_name: str):
+        if index_of_loaded_character is None:
+            print(
+                "No character is currently loaded! Please input 'load [character_name]' ."
+            )
+            return
+
+        possible_spells = []
+        for spell in character_data_list[index_of_loaded_character]["spells"]:
+            if spell_name in str(spell).lower():
+                possible_spells.append(spell)
+
+        handle_input(current_tab)
+        if len(possible_spells) == 0:
+            print(f"No spell with name '{spell_name}' found.")
+        elif len(possible_spells) == 1:
+            print(
+                f"> {possible_spells[0]}:\n{character_data_list[index_of_loaded_character]['spells'][possible_spells[0]]['description']}"
+            )
+        else:
+            print("No exact match. Possible spells: ", end="")
+            for spell in possible_spells:
+                print(
+                    spell + (", " if (possible_spells[-1] != spell) else ""),
+                    end="",
+                )
+            print()
 
 
-# starts the sequence of adding an item to the inventory
-def add_item():
-    if not is_character_loaded("inventory"):
-        return
-    name: str = ""
-    count: int = 1
-    catigory: str = ""
-    description: str = ""
-    while name == "":
-        name = input("Please enter a name for the item you want to add: ")
+# starts the process of adding something to the dataset
+def add():
+    match current_tab:
+        case "inventory":
+            add_item()
+        case "spells":
+            add_spell()
+        case "skills":
+            add_skill()
+        case "languages":
+            add_language()
+        case _:
+            print("There is nothing you can add on this page.")
+
+    def add_item():
+        if not is_character_loaded("inventory"):
+            return
+
+        name: str
+        count: int
+        catigory: str
+        description: str
+
+        name = input(
+            "Press [enter] without entering any text to cancel adding an item.\n"
+            "\n"
+            "Please enter a name of the item you want to add: "
+        )
+
         if name is "":
-            print("\nYou must enter a name for the item.\n")
-    if name in character_data_list[index_of_loaded_character]["inventory"]:
-        character_data_list[index_of_loaded_character]["inventory"][name]["count"] += 1
-        print("\nSince the item already exists, it's count was incremented.")
-        return
-    count = int(
-        input(
-            "\n(*Note: the programm WILL crash if the input consists of any symbols other then 0-9)\nPlease enter the count of the item: "
+            inventory()
+            return
+
+        for item in character_data_list[index_of_loaded_character]["inventory"]:
+            if str(item).lower == name.lower():
+                character_data_list[index_of_loaded_character]["inventory"][name][
+                    "count"
+                ] += 1
+                inventory()
+                print("\nSince the item already exists, it's count was incremented.")
+                return
+
+        try:
+            count = int(
+                input(
+                    "\n(*Note: cancels adding an item if the input consists of any symbols other then 0-9)\n"
+                    "Please enter the count of the item: "
+                )
+            )
+        except ValueError:
+            inventory()
+            return
+
+        catigory = input(
+            "\nPlease enter the catigory into which the item belongs: "
+        ).lower()
+
+        if not catigory:
+            inventory()
+            return
+
+        description = input("\nPlease enter a description for the item: ")
+
+        if not description:
+            inventory()
+            return
+
+        character_data_list[index_of_loaded_character]["inventory"][name] = {
+            "catigory": catigory,
+            "count": count,
+            "description": description,
+        }
+        save_character_data()
+        inventory()
+
+    def add_spell():
+        if not is_character_loaded("spells"):
+            return
+
+        name: str
+        lvl: int
+        type: str
+        description: str
+
+        name = input(
+            "Press [enter] without entering any text to cancel adding a spell.\n"
+            "\n"
+            "Please enter a name of the spell you want to add: "
         )
-    )
-    catigory = input(
-        "\nPlease enter the catigory into which the item belongs: "
-    ).lower()
-    description = input("\nPlease enter a description for the item: ")
-    character_data_list[index_of_loaded_character]["inventory"][name] = {
-        "catigory": catigory,
-        "count": count,
-        "description": description,
-    }
-    save_character_data()
-    inventory()
 
-
-# starts the sequence of adding a skill to the skill list
-def add_skill():
-    if not is_character_loaded("skills"):
-        return
-    name: str = ""
-    description: str = ""
-    while name == "":
-        name = input("Please enter the name of the skill you want to add: ")
         if name is "":
-            print("\nYou must enter a name.\n")
-    if name in character_data_list[index_of_loaded_character]["skills"]:
-        skills()
-        print(
-            "\nA skill with this name already exists! You can't have 2 skills with the exact same name."
+            spells()
+            return
+
+        for spell in character_data_list[index_of_loaded_character]["spells"]:
+            if str(spell).lower == name.lower():
+                spells()
+                print(
+                    "\nA spell with this name already exists! You can't have 2 spells with the exact same name."
+                )
+                return
+
+        try:
+            lvl = int(
+                input(
+                    "\n(*Note: cancels adding a spell if the input consists of any symbols other then 0-9)\n"
+                    "Please enter the count of the item: "
+                )
+            )
+        except ValueError:
+            spells()
+            return
+
+        type = input("\nPlease enter type of the spell: ").lower()
+
+        if not type:
+            spells()
+            return
+
+        description = input("\nPlease enter a description for the spell: ")
+
+        if not description:
+            spells()
+            return
+
+        character_data_list[index_of_loaded_character]["spells"][name] = {
+            "type": type,
+            "lvl": lvl,
+            "description": description,
+        }
+        save_character_data()
+        spells()
+
+    def add_skill():
+        if not is_character_loaded("skills"):
+            return
+
+        name: str
+        description: str
+
+        name = input(
+            "Press [enter] without entering any text to cancel adding the skill.\n"
+            "\n"
+            "Please enter a name of the skill you want to add: "
         )
-        return
-    description = input("\nPlease enter a description for the skill: ")
-    character_data_list[index_of_loaded_character]["skills"][name] = description
-    save_character_data()
-    skills()
 
-
-# starts the sequence of adding a spell to the spell list
-def add_spell():
-    if not is_character_loaded("spells"):
-        return
-    name: str = ""
-    lvl: int = 1
-    type: str = ""
-    description: str = ""
-    while name == "":
-        name = input("Please enter a name for the spell you want to add: ")
         if name is "":
-            print("\nYou must enter a name for the spell.\n")
-    if name in character_data_list[index_of_loaded_character]["spells"]:
-        skills()
-        print(
-            "\nA spell with this name already exists! You can't have 2 spells with the exact same name."
+            skills()
+            return
+
+        for skill in character_data_list[index_of_loaded_character]["skills"]:
+            if str(skill).lower == name.lower():
+                skills()
+                print(
+                    "\nA skill with this name already exists! You can't have 2 skills with the exact same name."
+                )
+                return
+
+        description = input("\nPlease enter a description for the sikll: ")
+
+        if not description:
+            spells()
+            return
+
+        character_data_list[index_of_loaded_character]["skills"][name] = description
+        save_character_data()
+        spells()
+
+    def add_language():
+        if not is_character_loaded("skills"):
+            return
+
+        name: str
+        lvl: str
+
+        name = input(
+            "Press [enter] without entering any text to cancel adding the language.\n"
+            "\n"
+            "Please enter the language you want to add: "
         )
-        return
-    lvl = int(
-        input(
-            "\n(*Note: the programm WILL crash if the input consists of any symbols other then 0-9)\nPlease enter spell's level: "
-        )
-    )
-    type = input("\nPlease enter type of the spell: ").lower()
-    description = input("\nPlease enter a description for the spell: ")
-    character_data_list[index_of_loaded_character]["inventory"][name] = {
-        "type": type,
-        "lvl": lvl,
-        "description": description,
-    }
-    save_character_data()
-    spells()
+
+        if name is "":
+            languages()
+            return
+
+        for language in character_data_list[index_of_loaded_character]["languages"]:
+            if str(language).lower == name.lower():
+                languages()
+                print(
+                    "\nA language with this name already exists! You can't have 2 languages with the exact same name."
+                )
+                return
+
+        lvl = input("\nPlease enter a description for the language: ")
+
+        if not lvl:
+            spells()
+            return
+
+        character_data_list[index_of_loaded_character]["languages"] = lvl
+        save_character_data()
+        languages()
 
 
+# starts the process of deleting something from the dataset
 def delete(entity_name: str):
     match current_tab:
         case "inventory":
@@ -633,116 +743,148 @@ def delete(entity_name: str):
             delete_spell(entity_name)
         case "skills":
             delete_skill(entity_name)
+        case "languages":
+            delete_language(entity_name)
         case _:
             handle_input(current_tab)
             print("\nThere is nothing on this page you can delete.")
 
-
-def delete_item(item_name: str):
-    if index_of_loaded_character is None:
-        print(
-            "No character is currently loaded! please input 'load [character_name]' in order to load a character."
-        )
-        return
-
-    possible_items = []
-    for item in character_data_list[index_of_loaded_character]["inventory"]:
-        if item_name in str(item).lower():
-            possible_items.append(item)
-
-    handle_input(current_tab)
-    if len(possible_items) == 0:
-        print(f"No item with name '{item_name}' found.")
-    elif len(possible_items) == 1:
-        print(f"Are you sure that you want to delete '{possible_items[0]}'?")
-        confirmation = input("confirm (y/n): ")
-        if confirmation[0] == "y":
-            character_data_list[index_of_loaded_character]["inventory"].pop(
-                possible_items[0]
-            )
-            save_character_data()
-        inventory()
-    else:
-        print("No exact match. Possible items: ", end="")
-        for item in possible_items:
+    def delete_item(item_name: str):
+        if index_of_loaded_character is None:
             print(
-                item + (", " if (possible_items[-1] != item) else ""),
-                end="",
+                "No character is currently loaded! Please input 'load [character_name]' ."
             )
-        print()
+            return
 
+        possible_items = []
+        for item in character_data_list[index_of_loaded_character]["inventory"]:
+            if item_name in str(item).lower():
+                possible_items.append(item)
 
-def delete_spell(spell_name: str):
-    if index_of_loaded_character is None:
-        print(
-            "No character is currently loaded! please input 'load [character_name]' in order to load a character."
-        )
-        return
+        handle_input(current_tab)
+        if len(possible_items) == 0:
+            print(f"No item with name '{item_name}' found.")
+        elif len(possible_items) == 1:
+            print(f"Are you sure that you want to delete '{possible_items[0]}'?")
+            confirmation = input("confirm (y/n): ")
+            if confirmation[0] == "y":
+                character_data_list[index_of_loaded_character]["inventory"].pop(
+                    possible_items[0]
+                )
+                save_character_data()
+            inventory()
+        else:
+            print("No exact match. Possible items: ", end="")
+            for item in possible_items:
+                print(
+                    item + (", " if (possible_items[-1] != item) else ""),
+                    end="",
+                )
+            print()
 
-    possible_spells = []
-    for spell in character_data_list[index_of_loaded_character]["spells"]:
-        if spell_name in str(spell).lower():
-            possible_spells.append(spell)
-
-    handle_input(current_tab)
-    if len(possible_spells) == 0:
-        print(f"No item with name '{spell_name}' found.")
-    elif len(possible_spells) == 1:
-        print(f"Are you sure that you want to delete '{possible_spells[0]}'?")
-        confirmation = input("confirm (y/n): ")
-        if confirmation[0] == "y":
-            character_data_list[index_of_loaded_character]["spells"].pop(
-                possible_spells[0]
-            )
-            save_character_data()
-        spells()
-    else:
-        print("No exact match. Possible skills: ", end="")
-        for spell in possible_spells:
+    def delete_spell(spell_name: str):
+        if index_of_loaded_character is None:
             print(
-                spell + (", " if (possible_spells[-1] != spell) else ""),
-                end="",
+                "No character is currently loaded! Please input 'load [character_name]' ."
             )
-        print()
+            return
 
+        possible_spells = []
+        for spell in character_data_list[index_of_loaded_character]["spells"]:
+            if spell_name in str(spell).lower():
+                possible_spells.append(spell)
 
-def delete_skill(skill_name):
-    if index_of_loaded_character is None:
-        print(
-            "No character is currently loaded! please input 'load [character_name]' in order to load a character."
-        )
-        return
+        handle_input(current_tab)
+        if len(possible_spells) == 0:
+            print(f"No item with name '{spell_name}' found.")
+        elif len(possible_spells) == 1:
+            print(f"Are you sure that you want to delete '{possible_spells[0]}'?")
+            confirmation = input("confirm (y/n): ")
+            if confirmation[0] == "y":
+                character_data_list[index_of_loaded_character]["spells"].pop(
+                    possible_spells[0]
+                )
+                save_character_data()
+            spells()
+        else:
+            print("No exact match. Possible skills: ", end="")
+            for spell in possible_spells:
+                print(
+                    spell + (", " if (possible_spells[-1] != spell) else ""),
+                    end="",
+                )
+            print()
 
-    possible_skills = []
-    for skill in character_data_list[index_of_loaded_character]["skills"]:
-        if skill_name in str(skill).lower():
-            possible_skills.append(skill)
-
-    handle_input(current_tab)
-    if len(possible_skills) == 0:
-        print(f"No item with name '{skill_name}' found.")
-    elif len(possible_skills) == 1:
-        print(f"Are you sure that you want to delete '{possible_skills[0]}'?")
-        confirmation = input("confirm (y/n): ")
-        if confirmation[0] == "y":
-            character_data_list[index_of_loaded_character]["skill"].pop(
-                possible_skills[0]
-            )
-            save_character_data()
-        skills()
-    else:
-        print("No exact match. Possible skills: ", end="")
-        for skill in possible_skills:
+    def delete_skill(skill_name: str):
+        if index_of_loaded_character is None:
             print(
-                skill + (", " if (possible_skills[-1] != skill) else ""),
-                end="",
+                "No character is currently loaded! Please input 'load [character_name]' ."
             )
-        print()
+            return
+
+        possible_skills = []
+        for skill in character_data_list[index_of_loaded_character]["skills"]:
+            if skill_name in str(skill).lower():
+                possible_skills.append(skill)
+
+        handle_input(current_tab)
+        if len(possible_skills) == 0:
+            print(f"No item with name '{skill_name}' found.")
+        elif len(possible_skills) == 1:
+            print(f"Are you sure that you want to delete '{possible_skills[0]}'?")
+            confirmation = input("confirm (y/n): ")
+            if confirmation[0] == "y":
+                character_data_list[index_of_loaded_character]["skill"].pop(
+                    possible_skills[0]
+                )
+                save_character_data()
+            skills()
+        else:
+            print("No exact match. Possible skills: ", end="")
+            for skill in possible_skills:
+                print(
+                    skill + (", " if (possible_skills[-1] != skill) else ""),
+                    end="",
+                )
+            print()
+
+    def delete_language(language_name: str):
+        if index_of_loaded_character is None:
+            print(
+                "No character is currently loaded! Please input 'load [character_name]' ."
+            )
+            return
+
+        possible_languages = []
+        for language in character_data_list[index_of_loaded_character]["langauges"]:
+            if language_name in str(language).lower():
+                possible_languages.append(language)
+
+        handle_input(current_tab)
+        if len(possible_languages) == 0:
+            languages()
+            print(f"No language '{language_name}' found.")
+        elif len(possible_languages) == 1:
+            print(f"Are you sure that you want to delete '{possible_languages[0]}'?")
+            confirmation = input("confirm (y/n): ")
+            if confirmation[0] == "y":
+                character_data_list[index_of_loaded_character]["languages"].pop(
+                    possible_languages[0]
+                )
+                save_character_data()
+            languages()
+        else:
+            print("No exact match. Possible languages: ", end="")
+            for language in possible_languages:
+                print(
+                    language + (", " if (possible_languages[-1] != language) else ""),
+                    end="",
+                )
+            print()
 
 
 def main():
     extract_character_data()
-    clear()
     stats()
     if len(character_data_list) == 1:
         load(character_data_list[0]["name"])

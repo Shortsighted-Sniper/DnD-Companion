@@ -94,7 +94,7 @@ def handle_input(program_input: str = None):
         user_input = program_input
     else:
         user_input: str = input("\n\n\n>>> ").lower()
-    
+
     if not user_input:
         clear()
         display_header()
@@ -195,9 +195,7 @@ def load(character_name: str):
     else:
         print("No exact matche, pleaes select one of the following:")
         for character in possible_characters:
-            print(
-                f"{possible_characters.index(character)+1}. " + character
-            )
+            print(f"{possible_characters.index(character)+1}. " + character)
         print()
 
 
@@ -476,6 +474,10 @@ def describe(entity_name: str):
 
         possible_items = []
         for item in character_data_list[index_of_loaded_character]["inventory"]:
+            if item_name is str(item).lower():
+                possible_items.clear()
+                possible_items.append(item_name)
+                break
             if item_name in str(item).lower():
                 possible_items.append(item)
 
@@ -504,6 +506,10 @@ def describe(entity_name: str):
 
         possible_spells = []
         for spell in character_data_list[index_of_loaded_character]["spells"]:
+            if spell_name is str(spell).lower():
+                possible_spells.clear()
+                possible_spells.append(spell_name)
+                break
             if spell_name in str(spell).lower():
                 possible_spells.append(spell)
 
@@ -532,6 +538,7 @@ def describe(entity_name: str):
             handle_input(current_tab)
             print("There are nothing that can be described on this page.")
 
+
 # starts the process of adding something to the dataset
 def add():
     def add_item():
@@ -547,14 +554,14 @@ def add():
             "Press [enter] without entering any text to cancel adding an item.\n"
             "\n"
             "Please enter a name of the item you want to add: "
-        )
+        ).strip()
 
         if name is "":
             inventory()
             return
 
         for item in character_data_list[index_of_loaded_character]["inventory"]:
-            if str(item).lower == name.lower():
+            if str(item).lower == name.lower().strip():
                 character_data_list[index_of_loaded_character]["inventory"][name][
                     "count"
                 ] += 1
@@ -567,7 +574,7 @@ def add():
                 input(
                     "\n(*Note: cancels adding an item if the input consists of any symbols other then 0-9)\n"
                     "Please enter the count of the item: "
-                )
+                ).strip()
             )
         except ValueError:
             inventory()
@@ -575,13 +582,13 @@ def add():
 
         catigory = input(
             "\nPlease enter the catigory into which the item belongs: "
-        ).lower()
+        ).lower().strip()
 
         if not catigory:
             inventory()
             return
 
-        description = input("\nPlease enter a description for the item: ")
+        description = input("\nPlease enter a description for the item: ").strip()
 
         if not description:
             inventory()
@@ -608,14 +615,14 @@ def add():
             "Press [enter] without entering any text to cancel adding a spell.\n"
             "\n"
             "Please enter a name of the spell you want to add: "
-        )
+        ).strip()
 
         if name is "":
             spells()
             return
 
         for spell in character_data_list[index_of_loaded_character]["spells"]:
-            if str(spell).lower == name.lower():
+            if str(spell).lower() == name.lower().strip():
                 spells()
                 print(
                     "\nA spell with this name already exists! You can't have 2 spells with the exact same name."
@@ -627,19 +634,19 @@ def add():
                 input(
                     "\n(*Note: cancels adding a spell if the input consists of any symbols other then 0-9)\n"
                     "Please enter the count of the item: "
-                )
+                ).strip()
             )
         except ValueError:
             spells()
             return
 
-        type = input("\nPlease enter type of the spell: ").lower()
+        type = input("\nPlease enter type of the spell: ").lower().strip()
 
         if not type:
             spells()
             return
 
-        description = input("\nPlease enter a description for the spell: ")
+        description = input("\nPlease enter a description for the spell: ").strip()
 
         if not description:
             spells()
@@ -664,14 +671,14 @@ def add():
             "Press [enter] without entering any text to cancel adding the skill.\n"
             "\n"
             "Please enter a name of the skill you want to add: "
-        )
+        ).strip()
 
         if name is "":
             skills()
             return
 
         for skill in character_data_list[index_of_loaded_character]["skills"]:
-            if str(skill).lower == name.lower():
+            if str(skill).lower == name.lower().strip():
                 skills()
                 print(
                     "\nA skill with this name already exists! You can't have 2 skills with the exact same name."
@@ -699,14 +706,14 @@ def add():
             "Press [enter] without entering any text to cancel adding the language.\n"
             "\n"
             "Please enter the language you want to add: "
-        )
+        ).strip()
 
         if name is "":
             languages()
             return
 
         for language in character_data_list[index_of_loaded_character]["languages"]:
-            if str(language).lower == name.lower():
+            if str(language).lower == name.lower().strip():
                 languages()
                 print(
                     "\nA language with this name already exists! You can't have 2 languages with the exact same name."
@@ -747,6 +754,10 @@ def delete(entity_name: str):
 
         possible_items = []
         for item in character_data_list[index_of_loaded_character]["inventory"]:
+            if item_name is str(item).lower():
+                possible_items.clear()
+                possible_items.append(item_name)
+                break
             if item_name in str(item).lower():
                 possible_items.append(item)
 
@@ -780,6 +791,10 @@ def delete(entity_name: str):
 
         possible_spells = []
         for spell in character_data_list[index_of_loaded_character]["spells"]:
+            if spell_name is str(spell).lower():
+                possible_spells.clear()
+                possible_spells.append(spell_name)
+                break
             if spell_name in str(spell).lower():
                 possible_spells.append(spell)
 
@@ -813,8 +828,12 @@ def delete(entity_name: str):
 
         possible_skills = []
         for skill in character_data_list[index_of_loaded_character]["skills"]:
+            if skill_name is str(skill).lower():
+                possible_skills.clear()
+                possible_skills.append(skill_name)
+                break
             if skill_name in str(skill).lower():
-                str(possible_skills.append(skill)).lower()
+                possible_skills.append(skill)
 
         handle_input(current_tab)
         if len(possible_skills) == 0:
@@ -846,6 +865,10 @@ def delete(entity_name: str):
 
         possible_languages = []
         for language in character_data_list[index_of_loaded_character]["languages"]:
+            if language_name is str(language).lower():
+                possible_languages.clear()
+                possible_languages.append(language_name)
+                break
             if language_name in str(language).lower():
                 possible_languages.append(language)
 

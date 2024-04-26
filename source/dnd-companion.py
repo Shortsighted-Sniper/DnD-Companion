@@ -94,6 +94,13 @@ def handle_input(program_input: str = None):
         user_input = program_input
     else:
         user_input: str = input("\n\n\n>>> ").lower()
+    
+    if not user_input:
+        clear()
+        display_header()
+        print(
+            f"Unknown command '{user_input}'. Input 'help' to see all commands and their uses."
+        )
 
     if user_input[0] is "1":
         stats()
@@ -460,15 +467,6 @@ def pay(amount: str):
 
 # calls one of the describs functions depending on which tab the user is currently on
 def describe(entity_name: str):
-    match current_tab:
-        case "inventory":
-            describe_item(entity_name)
-        case "spells":
-            describe_spell(entity_name)
-        case _:
-            handle_input(current_tab)
-            print("There are nothing that can be described on this page.")
-
     def describe_item(item_name: str):
         if index_of_loaded_character is None:
             print(
@@ -525,6 +523,14 @@ def describe(entity_name: str):
                 )
             print()
 
+    match current_tab:
+        case "inventory":
+            describe_item(entity_name)
+        case "spells":
+            describe_spell(entity_name)
+        case _:
+            handle_input(current_tab)
+            print("There are nothing that can be described on this page.")
 
 # starts the process of adding something to the dataset
 def add():

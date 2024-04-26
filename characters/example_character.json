@@ -1,0 +1,78 @@
+{
+  "name": "Example Character",
+  "class": "Example Class",
+  "hp": { "current": 12, "max": 34 },
+  "lvl": 5,
+  "death saves": 3,
+  "speed": 123,
+  "stats": {
+    "strength": {
+      "base": 10,
+      "save": 1,
+      "athletics": 1
+    },
+    "dexterity": {
+      "base": 10,
+      "save": 2,
+      "acrobatics": 2,
+      "sleight of hand": 2,
+      "stealth": 2
+    },
+    "intelligence": {
+      "base": 10,
+      "save": 3,
+      "arcana": 3,
+      "history": 3,
+      "ivestigation": 3,
+      "nature": 3,
+      "religion": 3
+    },
+    "wisdom": {
+      "base": 10,
+      "save": 4,
+      "animal handling": 4,
+      "insight": 4,
+      "medicine": 4,
+      "perception": 4,
+      "survival": 4
+    },
+    "charisma": {
+      "base": 10,
+      "save": 4,
+      "deception": 4,
+      "intimidation": 4,
+      "performance": 4,
+      "persuasion": 4
+    },
+    "constitution": { 
+      "base": 10, 
+      "save": 5 
+    }
+  },
+  "inventory": {
+
+    "gp": {
+      "catigory": "valuables",
+      "count": 1234,
+      "description": "Standard money currency."
+    },
+    "Example Item": {
+      "catigory": "example catigory",
+      "count": 1234,
+      "description": "This is an example description for an example item."
+    }
+  },
+  "spells": {
+    "Example Spell": {
+      "type": "example spell type",
+      "lvl": 1234,
+      "description": "This is an example spell that belongs to an example catigory. It does a lot of example things."
+    }
+  },
+  "skills": {
+    "Example Skill": "This is an example description for an example skill. This skill allows you to do a lot of examplery stuff."
+  },
+  "languages": {
+    "Exemplar": "exemplary"
+  }
+}
